@@ -2,6 +2,7 @@
 Program to extract the image features using the Keras 
 pretrained models:
 https://www.kaggle.com/lemonkoala/pretrained-keras-models-symlinked-not-copied
+for the quality of the features 
 
 '''
 file_name='features_quality'
@@ -45,7 +46,7 @@ features['image'] = imgs
 sns.set_style("whitegrid")
 sns.set_context("notebook", font_scale=1.5, rc={"lines.linewidth": 2.5})
 
-%matplotlib inline
+#%matplotlib inline
 #the model is inception V3
 inception_model = inception_v3.InceptionV3(weights='imagenet')
 def image_classify(model, pak, img, top_n=3):
@@ -70,12 +71,14 @@ def incept_class(incept):
         return 3
         
 # loop over all images:
-class = []
+class_qual = []
 for i in range(0,len(image_files)):
+#for i in range(0,100):
     img = Image.open(image_files[i])
     inception_preds = image_classify(inception_model, inception_v3, img)
-    class.extend(incept_class(inception_preds))
-    
-features['class_qual'] =  class
+#    print(incept_class(inception_preds))
+    class_qual.extend([incept_class(inception_preds)])
+#print(class_qual)    
+features['class_qual'] =  class_qual
 features.to_pickle(file_name)      
 
